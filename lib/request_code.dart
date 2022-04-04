@@ -36,11 +36,13 @@ class RequestCode {
   _mobileAuth(String initialURL) async {
     // if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView(); // webview_flutter: ^3.0.0 BREAKING CHANGE Not necessary
 
-    var webView = WebView(
+    var webView = WillPopScope(
+      onWillPop: () async => false,
+        child:WebView(
       initialUrl: initialURL,
       javascriptMode: JavascriptMode.unrestricted,
       onPageFinished: (url) => _getUrlData(url),
-    );
+    ));
 
     await Navigator.of(_config.context!)
         .push(MaterialPageRoute(builder: (context) => SafeArea(child: webView)));
